@@ -1,0 +1,16 @@
+.error {
+
+    .back{
+        border-bottom: 1px solid white;
+        padding: 0 5px;
+
+        &:hover{
+            background: white;
+            color: black;
+        }
+    }
+  .subtext {
+    font-family: "Star Wars", sans-serif;
+    text-align: center;
+  }
+}

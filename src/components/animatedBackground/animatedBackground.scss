@@ -1,0 +1,114 @@
+// Star night background
+@function multiple-box-shadow($n) {
+  $value: "#{random(2000)}px #{random(20000)}px #FFF";
+  @for $i from 2 through $n {
+    $value: "#{$value}, #{random(2000)}px #{random(2000)}px #FFF";
+  }
+
+  @return unquote($value);
+}
+
+$shadows-small: multiple-box-shadow(700);
+$shadows-medium: multiple-box-shadow(200);
+$shadows-big: multiple-box-shadow(100);
+
+.starsContainer {
+  min-height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  .star {
+    width: 1px;
+    height: 1px;
+    background: transparent;
+    animation: animStar 50s linear infinite;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 2000px;
+      width: 1px;
+      height: 1px;
+      background: transparent;
+    }
+  }
+
+  .star-small {
+    box-shadow: $shadows-small;
+    &:after {
+      box-shadow: $shadows-small;
+    }
+  }
+
+  .star-medium {
+    width: 2px;
+    height: 2px;
+    box-shadow: $shadows-medium;
+    animation: animStar 100s linear infinite;
+
+    &:after {
+      top: 2000px;
+      width: 2px;
+      height: 2px;
+      box-shadow: $shadows-medium;
+    }
+  }
+
+  .star-big {
+    width: 3px;
+    height: 3px;
+    box-shadow: $shadows-big;
+    animation: animStar 150s linear infinite;
+
+    &:after {
+      top: 2000px;
+      width: 3px;
+      height: 3px;
+      box-shadow: $shadows-big;
+    }
+  }
+
+  // Light night background
+  .spaceship {
+    position: absolute;
+    left: -10px;
+    width: 10px;
+    height: 2px;
+    background-color: red;
+    animation: animLaser 2s linear infinite;
+  
+    $laserBulletColors: (
+      black
+    );
+  
+    @for $i from 1 through 10 {
+      &.spaceship-#{$i} {
+        top: $i * 10%;
+        animation-duration: random(6) * 1s;
+        $randomColor: nth($laserBulletColors, random(1));
+        background-color: $randomColor;
+      }
+    }
+  }
+}
+
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+@keyframes animLaser {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
