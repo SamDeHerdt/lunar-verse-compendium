@@ -1,16 +1,16 @@
 // Importing dependencies and components
 import React, { useEffect, useState, useRef } from "react";
-import "./characterSearch.scss";
+import { sanitize } from "dompurify";
+import { escapeRegExp } from "lodash";
+import MovieList from "../../components/movieList/movieList";
+import CharacterDetails from "../../components/characterDetailList/characterDetailList";
+import TwinklingStarsBackground from "../../components/animatedBackground/animatedBackground";
+import Loading from "../../components/loading/loading";
+import DarkModeSwitch from "../../components/darkModeSwitch/darkModeSwitch";
 import Character from "../../models/character.model";
 import { fetchAllCharactersData } from "../../api/character.api";
 import { defaultProps } from "./characterSearch.config";
-import MovieList from "../../components/movieList/movieList";
-import CharacterDetails from "../../components/characterDetailList/characterDetailList";
-import { FaRebel, FaGalacticRepublic } from "react-icons/fa";
-import { sanitize } from "dompurify";
-import { escapeRegExp } from "lodash";
-import TwinklingStarsBackground from "../../components/animatedBackground/animatedBackground";
-import Loading from "../../components/loading/loading";
+import "./characterSearch.scss";
 
 const CharacterCompendium: React.FC = () => {
   // State variables
@@ -41,45 +41,67 @@ const CharacterCompendium: React.FC = () => {
       });
   }, []);
 
+  // Handles the character search based on the input value
   const handleCharacterSearch = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    // Sanitize the search query
     const searchQuery = sanitize(event.target.value);
+    // Set the selected character name
     setSelectedCharacterName(searchQuery);
+
     if (searchQuery.trim() === "") {
       // Clearing search results and selected character if search query is empty
+      // Clear the search results
       setSearchResults([]);
+      // Clear the selected character
       setSelectedCharacter(null);
+      // Clear the suggested character
       setSuggestedCharacter(null);
     } else {
+      // Sanitize the search query for regular expression matching
       const sanitizedQuery = escapeRegExp(searchQuery.toLowerCase());
       const matchedCharacters = characters.filter((character) =>
+        // Filter characters based on a case-insensitive match of the search query
         character.name.toLowerCase().match(new RegExp(sanitizedQuery))
       );
+
       if (matchedCharacters.length > 0) {
         // Sorting and setting the matched characters as search results
-        const sortedCharacters = matchedCharacters.sort((a, b) =>
-          a.name.localeCompare(b.name)
+        const sortedCharacters = matchedCharacters.sort(
+          // Sort the matched characters alphabetically by name
+          (a, b) => a.name.localeCompare(b.name)
         );
+        // Set the sorted matched characters as search results
         setSearchResults(sortedCharacters);
+        // Clear the selected character
         setSelectedCharacter(null);
+        // Clear the suggested character
         setSuggestedCharacter(null);
       } else {
+        // Clear the search results
         setSearchResults([]);
+        // Clear the selected character
         setSelectedCharacter(null);
+
         // Finding a suggested character if no exact match is found
         const suggested = characters.find((character) =>
+          // Find a character whose name starts with the search query
           character.name.toLowerCase().startsWith(searchQuery.toLowerCase())
         );
+
         if (suggested) {
+          // Set the suggested character's name
           setSuggestedCharacter(suggested.name);
         } else {
+          // Clear the suggested character
           setSuggestedCharacter(null);
         }
       }
     }
   };
 
+  // Handles the selection of a character
   const handleCharacterSelect = (character: Character) => {
     setSelectedCharacter(character);
     setSelectedCharacterName(character.name);
@@ -90,15 +112,16 @@ const CharacterCompendium: React.FC = () => {
     }
   };
 
+  // Handles the toggle of dark mode
   const handleDarkModeToggle = () => {
     setIsDarkMode(!isDarkMode);
   };
 
-  // Rendering the component
+  // Renders the component
   return (
     <div
       className={`min-h-screen p-10 ${
-        isDarkMode ? " text-white" : "bg-white text-black"
+        isDarkMode ? "text-white" : "bg-white text-black"
       } flex flex-col items-center justify-center transition duration-500`}
     >
       <TwinklingStarsBackground isDarkMode={isDarkMode} />
@@ -110,53 +133,10 @@ const CharacterCompendium: React.FC = () => {
         } rounded-lg shadow-xl`}
       >
         {/* Dark mode toggle switch */}
-        <div className="darkModeSwitch">
-          <label
-            htmlFor="darkModeToggle"
-            className="flex items-center space-x-2 cursor-pointer w-full justify-center flex-col"
-          >
-            <div className="modeButtons flex flex-row mb-2">
-              <span
-                className={`w-6 h-6 mr-2 flex items-center justify-center rounded-full relative ${
-                  isDarkMode ? "bg-white" : "bg-white ring-2 ring-blue-500"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  id="republicMode"
-                  onChange={handleDarkModeToggle}
-                  className="appearance-none w-6 h-6 rounded-full transition duration-300 focus:outline-none cursor-pointer"
-                />
-                <FaGalacticRepublic // Republic Star Wars icon
-                  className={`text-xl pointer-events-none absolute ${
-                    isDarkMode ? "text-black" : "text-black"
-                  }`}
-                />
-              </span>
-
-              <span
-                className={`w-6 h-6 flex items-center justify-center rounded-full relative ${
-                  isDarkMode ? "bg-gray-700 ring-2 ring-red-500" : "bg-black"
-                }`}
-              >
-                <input
-                  type="checkbox"
-                  id="rebelMode"
-                  onChange={handleDarkModeToggle}
-                  className="appearance-none w-6 h-6 rounded-full transition duration-300 focus:outline-none cursor-pointer"
-                />
-                <FaRebel // Rebel Star Wars icon
-                  className={`text-xl pointer-events-none absolute ${
-                    isDarkMode ? "text-white" : "text-white"
-                  }`}
-                />
-              </span>
-            </div>
-            <span className="text-sm font-semibold">
-              {isDarkMode ? "Rebel Mode" : "Republic Mode"}
-            </span>
-          </label>
-        </div>
+        <DarkModeSwitch
+          isDarkMode={isDarkMode}
+          handleDarkModeToggle={handleDarkModeToggle}
+        />
 
         <div className="mb-4">
           <h1 className="text-3xl font-bold text-center mb-20 mt-10">

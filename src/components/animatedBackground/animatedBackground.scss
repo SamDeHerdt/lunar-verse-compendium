@@ -1,11 +1,11 @@
 // Star night background
 @function multiple-box-shadow($n) {
-  $value: "#{random(2000)}px #{random(20000)}px #FFF";
+  $value: "#{random(2000)}px #{random(20000)}px #FFF"; // Generate random values for the initial box shadow
   @for $i from 2 through $n {
-    $value: "#{$value}, #{random(2000)}px #{random(2000)}px #FFF";
+    $value: "#{$value}, #{random(2000)}px #{random(2000)}px #FFF"; // Generate random values for additional box shadows
   }
 
-  @return unquote($value);
+  @return unquote($value); // Return the generated box shadow value as a string
 }
 
 $shadows-small: multiple-box-shadow(700);
@@ -78,22 +78,19 @@ $shadows-big: multiple-box-shadow(100);
     height: 2px;
     background-color: red;
     animation: animLaser 2s linear infinite;
-  
-    $laserBulletColors: (
-      black
-    );
-  
+
+    $laserBulletColors: (black);
+
     @for $i from 1 through 10 {
       &.spaceship-#{$i} {
-        top: $i * 10%;
-        animation-duration: random(6) * 1s;
-        $randomColor: nth($laserBulletColors, random(1));
-        background-color: $randomColor;
+        top: $i * 10%;  // Set the top position of the spaceship element based on the loop index
+        animation-duration: random(6) * 1s;  // Set the animation duration of the spaceship element to a random value between 0 and 5 seconds
+        $randomColor: nth($laserBulletColors, random(1));  // Select a random color from the $laserBulletColors list
+        background-color: $randomColor;  // Set the background color of the spaceship element to the randomly selected color
       }
-    }
+    }    
   }
 }
-
 
 @keyframes animStar {
   from {
