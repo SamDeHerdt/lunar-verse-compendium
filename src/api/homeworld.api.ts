@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setupCache } from 'axios-cache-adapter';
+import { setupCache } from "axios-cache-adapter";
 
 // Create an instance of axios with caching enabled
 const cache = setupCache({
@@ -9,14 +9,16 @@ const api = axios.create({
   adapter: cache.adapter,
 });
 
-export const fetchMovies = async () => {
+export const fetchHomeworld = async (url: string) => {
   try {
-    const response = await api.get(`${process.env.REACT_APP_SWAPI_URL}/films/`);
+    const response = await api.get(url);
+
     if (response.status !== 200) {
-      throw new Error("Failed to fetch movies");
+      throw new Error("Failed to fetch homeworld");
     }
-    return response.data.results;
+
+    return response.data;
   } catch (error) {
-    throw new Error("Error fetching movies");
+    throw new Error("Error fetching character's homeworld");
   }
 };
