@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { fetchHomeworld } from "../../api/character.api";
 import { CharacterDetailListData } from "../../models/component.model";
 import Loading from "../loading/loading";
+import { fetchHomeworld } from "../../api/character.api";
 
 const CharacterDetails: React.FC<CharacterDetailListData> = ({
   selectedCharacter,
   isDarkMode,
   url,
 }) => {
+  // State for loading indicator
   const [isLoading, setIsLoading] = useState(false);
+  // State for error message, if any
   const [error, setError] = useState("");
+  // State for storing homeworld information
   const [homeworld, setHomeworld] = useState("");
 
   useEffect(() => {
     if (selectedCharacter) {
+      // Fetch homeworld data when the selected character changes
       fetchHomeworldData(url);
     }
   }, [selectedCharacter, url]);
@@ -22,13 +26,17 @@ const CharacterDetails: React.FC<CharacterDetailListData> = ({
     try {
       setIsLoading(true);
       console.log(url);
+      // Fetch homeworld details using the API
       const homeworldDetails = await fetchHomeworld(url);
       console.log(homeworldDetails);
+      // Set the homeworld information
       setHomeworld(homeworldDetails.homeworld);
       setIsLoading(false);
     } catch (error) {
+      // Clear the homeworld information
       setHomeworld("");
       console.error(error);
+      // Set error message if there is an error during fetching
       setError("Error fetching character details");
       setIsLoading(false);
     }
@@ -36,14 +44,15 @@ const CharacterDetails: React.FC<CharacterDetailListData> = ({
 
   return (
     <div
-      className={`w-full md:w-2/4 md:mr-2  ${
+      className={`w-full mt-4 order-2 md:w-3/5 md:mr-2 md:mt-0 md:order-1  ${
         isDarkMode
-          ? "bg-gray-900 text-white"
-          : "bg-gray-200 text-black border border-blue-300"
-      } rounded-md p-4 border border-red-900`}
+          ? "bg-gray-900 text-white border border-red-900"
+          : "bg-gray-100 text-black border border-blue-300"
+      } rounded-md p-4 `}
     >
-      <h4 className="text-xl font-bold mb-4">Character Features</h4>
+      <h4 className="text-xl font-bold mb-4 text-gray-500 underline">Character Features</h4>
       {isLoading ? (
+        // Render loading indicator if loading state is true
         <Loading isDarkMode={isDarkMode} />
       ) : selectedCharacter ? (
         <ul className="space-y-2">

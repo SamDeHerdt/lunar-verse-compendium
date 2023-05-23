@@ -12,3 +12,7 @@ export interface CharacterDetailListData extends ComponentData {
 export interface MovieListData extends ComponentData {
   selectedCharacter: Character;
 }
+
+export interface DarkModeSwitchProps extends ComponentData {
+    handleDarkModeToggle: () => void;
+  }

@@ -1,6 +1,6 @@
 import React from "react";
-import "./animatedBackground.scss";
 import ComponentData from "../../models/component.model";
+import "./animatedBackground.scss";
 
 const AnimatedBackground: React.FC<ComponentData> = ({ isDarkMode }) => {
   return (
@@ -13,6 +13,7 @@ const AnimatedBackground: React.FC<ComponentData> = ({ isDarkMode }) => {
       <div id="stars2" className="star star-medium"></div>
       <div id="stars3" className="star star-big"></div>
       {!isDarkMode &&
+        // Render spaceship elements if isDarkMode is false
         [...Array(10)].map((_, index) => (
           <div key={index} className={`spaceship spaceship-${index + 1}`}></div>
         ))}

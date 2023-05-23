@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CharacterCompendium from "./pages/characterSearch/CharacterSearch";
-import "./index.scss";
 import NotFound from "./pages/404/404";
+import "./index.scss";
 
 ReactDOM.render(
   <React.StrictMode>
