@@ -10,8 +10,8 @@ const defaultProps: Character = {
   eye_color: "blue",
   skin_color: "pale",
   birth_year: "1995",
-  homeworld: "Earth",
-  url: 'https://test.be/'
+  homeworld:  "Earth",
+  url: "https://test.be/",
 };
 
 export { defaultProps };

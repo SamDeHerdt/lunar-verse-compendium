@@ -26,18 +26,3 @@ export const fetchAllCharactersData = async () => {
     throw new Error("Error fetching characters");
   }
 };
-
-export const fetchHomeworld = async (url: string) => {
-  try {
-    const response = await axios.get(url);
-    const homeworldResponse = await axios.get(response.data.homeworld);
-
-    const characterHomeworld = {
-      homeworld: homeworldResponse.data.results,
-    };
-
-    return characterHomeworld;
-  } catch (error) {
-    throw new Error('Error fetching character\'s homeworld');
-  }
-};

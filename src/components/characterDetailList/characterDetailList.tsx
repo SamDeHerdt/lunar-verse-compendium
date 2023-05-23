@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CharacterDetailListData } from "../../models/component.model";
 import Loading from "../loading/loading";
-import { fetchHomeworld } from "../../api/character.api";
+import { fetchHomeworld } from "../../api/homeworld.api";
 
 const CharacterDetails: React.FC<CharacterDetailListData> = ({
   selectedCharacter,
@@ -13,34 +13,39 @@ const CharacterDetails: React.FC<CharacterDetailListData> = ({
   // State for error message, if any
   const [error, setError] = useState("");
   // State for storing homeworld information
-  const [homeworld, setHomeworld] = useState("");
+  const [homeworld, setHomeworld] = useState<string>("");
 
   useEffect(() => {
     if (selectedCharacter) {
       // Fetch homeworld data when the selected character changes
-      fetchHomeworldData(url);
+      fetchHomeworldData(selectedCharacter.homeworld);
     }
-  }, [selectedCharacter, url]);
+  }, [selectedCharacter]);
 
   const fetchHomeworldData = async (url: string) => {
     try {
       setIsLoading(true);
-      console.log(url);
+  
       // Fetch homeworld details using the API
-      const homeworldDetails = await fetchHomeworld(url);
-      console.log(homeworldDetails);
+      const homeworldResponse = await fetchHomeworld(url);
+  
+      // Extract the homeworld name from the response
+      const homeworldName = homeworldResponse?.name || "";
+  
       // Set the homeworld information
-      setHomeworld(homeworldDetails.homeworld);
+      setHomeworld(homeworldName);
+  
+      // Set loading state to false after fetching data
       setIsLoading(false);
     } catch (error) {
-      // Clear the homeworld information
-      setHomeworld("");
-      console.error(error);
       // Set error message if there is an error during fetching
-      setError("Error fetching character details");
+      setError("Error fetching homeworld details");
+  
+      // Set loading state to false in case of error
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div
@@ -50,7 +55,9 @@ const CharacterDetails: React.FC<CharacterDetailListData> = ({
           : "bg-gray-100 text-black border border-blue-300"
       } rounded-md p-4 `}
     >
-      <h4 className="text-xl font-bold mb-4 text-gray-500 underline">Character Features</h4>
+      <h4 className="text-xl font-bold mb-4 text-gray-500 underline">
+        Character Features
+      </h4>
       {isLoading ? (
         // Render loading indicator if loading state is true
         <Loading isDarkMode={isDarkMode} />
@@ -61,7 +68,7 @@ const CharacterDetails: React.FC<CharacterDetailListData> = ({
             {selectedCharacter.birth_year}
           </li>
           <li>
-            <span className="font-semibold">Homeworld:</span> {homeworld}
+            <span className="font-semibold">Birth planet:</span> {homeworld}
           </li>
           <li>
             <span className="font-semibold">Gender:</span>{" "}
