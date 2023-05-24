@@ -9,8 +9,8 @@ import Loading from "../../components/loading/loading";
 import DarkModeSwitch from "../../components/darkModeSwitch/darkModeSwitch";
 import Character from "../../models/character.model";
 import { fetchAllCharactersData } from "../../api/character.api";
-import { defaultProps } from "./characterSearch.config";
-import "./characterSearch.scss";
+import { defaultProps } from "./characterCompendium.config";
+import "./characterCompendium.scss";
 
 const CharacterCompendium: React.FC = () => {
   // State variables
