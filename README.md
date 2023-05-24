@@ -55,6 +55,12 @@ cd lunar-verse-compendium
 npm install
 ```
 
+4. Create an .env in the main directory:
+```
+BROWSER=none
+REACT_APP_SWAPI_URL=https://swapi.dev/api
+```
+
 <br/>
 
 ## Usage
